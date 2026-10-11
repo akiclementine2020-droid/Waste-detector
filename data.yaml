@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 6
+names: ['bottle', 'cardboard', 'metal', 'organic', 'paper', 'plastic']
+
+roboflow:
+  workspace: aryas-workspace-yc2uz
+  project: smart-waste-detection-mvy71
+  version: 5
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/aryas-workspace-yc2uz/smart-waste-detection-mvy71/dataset/5

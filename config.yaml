@@ -1,0 +1,156 @@
+# Waste Detection System Configuration
+
+## Training Configuration
+TRAINING_CONFIG:
+  # Model selection
+  MODEL_SIZE: "yolov8m"  # Options: yolov8n, yolov8s, yolov8m, yolov8l, yolov8x
+  
+  # Training hyperparameters
+  EPOCHS: 100
+  BATCH_SIZE: 16
+  IMAGE_SIZE: 640
+  PATIENCE: 20  # Early stopping patience
+  
+  # Optimizer settings
+  LEARNING_RATE: 0.01
+  MOMENTUM: 0.937
+  WEIGHT_DECAY: 0.0005
+  
+  # Data augmentation
+  AUGMENTATION:
+    ROTATION: 10  # degrees
+    SCALE: 0.5
+    TRANSLATE: 0.1
+    FLIPLR: 0.5
+    FLIPUD: 0.5
+    HSV_H: 0.015
+    HSV_S: 0.7
+    HSV_V: 0.4
+    MOSAIC: 1.0
+  
+  # Device
+  DEVICE: 0  # GPU device ID (0 for first GPU, -1 for CPU)
+  
+  # Output
+  OUTPUT_DIR: "models"
+
+
+## Inference Configuration
+INFERENCE_CONFIG:
+  # Model path
+  MODEL_PATH: "models/waste_detector/weights/best.pt"
+  
+  # Inference settings
+  CONFIDENCE_THRESHOLD: 0.5
+  IOU_THRESHOLD: 0.45
+  MAX_DETECTIONS: 300
+  
+  # Performance
+  BATCH_SIZE: 1
+  DEVICE: 0  # Same GPU device as training
+
+
+## Web Interface Configuration
+INTERFACE_CONFIG:
+  # Server settings
+  SERVER_NAME: "0.0.0.0"
+  SERVER_PORT: 7860
+  SHARE: true
+  VERBOSE: true
+  
+  # Interface theme
+  THEME: "soft"
+  
+  # Confidence slider
+  CONFIDENCE_MIN: 0.0
+  CONFIDENCE_MAX: 1.0
+  CONFIDENCE_DEFAULT: 0.5
+  CONFIDENCE_STEP: 0.05
+
+
+## Waste Classes
+WASTE_CLASSES:
+  0: "bottle"
+  1: "cardboard"
+  2: "metal"
+  3: "organic"
+  4: "paper"
+  5: "plastic"
+
+CLASS_COLORS:
+  bottle: [255, 0, 0]        # Blue
+  cardboard: [0, 165, 255]   # Orange
+  metal: [192, 192, 192]     # Gray
+  organic: [34, 139, 34]     # Green
+  paper: [255, 255, 0]       # Cyan
+  plastic: [128, 0, 128]     # Purple
+
+
+## System Requirements
+REQUIREMENTS:
+  PYTHON_MIN: "3.8"
+  PYTORCH_VERSION: "2.0.0"
+  CUDA_MIN: "11.8"
+  RAM_MIN: 8  # GB
+  GPU_MEMORY_MIN: 4  # GB
+  STORAGE_MIN: 5  # GB
+
+
+## Performance Metrics (Expected)
+EXPECTED_PERFORMANCE:
+  MODEL_nano:
+    PARAMETERS: 3.2  # Million
+    SIZE_MB: 11.2
+    INFERENCE_TIME_MS: 30  # on GPU
+    EXPECTED_MAP50: 0.85
+  
+  MODEL_small:
+    PARAMETERS: 11.2
+    SIZE_MB: 40.6
+    INFERENCE_TIME_MS: 40
+    EXPECTED_MAP50: 0.88
+  
+  MODEL_medium:
+    PARAMETERS: 25.9
+    SIZE_MB: 100.7
+    INFERENCE_TIME_MS: 60
+    EXPECTED_MAP50: 0.91
+  
+  MODEL_large:
+    PARAMETERS: 43.7
+    SIZE_MB: 165.2
+    INFERENCE_TIME_MS: 100
+    EXPECTED_MAP50: 0.93
+  
+  MODEL_xlarge:
+    PARAMETERS: 68.2
+    SIZE_MB: 257.7
+    INFERENCE_TIME_MS: 150
+    EXPECTED_MAP50: 0.95
+
+
+## Troubleshooting Guide
+TROUBLESHOOTING:
+  GPU_OUT_OF_MEMORY:
+    - "Reduce batch size (--batch 8)"
+    - "Reduce image size (--imgsz 416)"
+    - "Use smaller model (yolov8s.pt)"
+    - "Use CPU only (--device -1)"
+  
+  POOR_ACCURACY:
+    - "Check dataset quality and labels"
+    - "Increase training epochs"
+    - "Use larger model size"
+    - "Verify data augmentation settings"
+  
+  SLOW_TRAINING:
+    - "Use GPU instead of CPU"
+    - "Use smaller model"
+    - "Reduce image size"
+    - "Increase batch size (if GPU memory allows)"
+  
+  MODEL_NOT_LOADING:
+    - "Train the model first: python train.py"
+    - "Verify model path exists"
+    - "Check file permissions"
+    - "Ensure correct weights file"

@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  waste-detector:
+    build: .
+    container_name: waste-detection-system
+    ports:
+      - "7860:7860"
+    volumes:
+      - ./models:/app/models
+      - ./test_results:/app/test_results
+      - ./inference_results:/app/inference_results
+    environment:
+      - PYTHONUNBUFFERED=1
+      - GRADIO_SERVER_NAME=0.0.0.0
+      - GRADIO_SERVER_PORT=7860
+    restart: unless-stopped
+    # Uncomment the following for GPU support (requires nvidia-docker)
+    # runtime: nvidia
+    # environment:
+    #   - NVIDIA_VISIBLE_DEVICES=all
